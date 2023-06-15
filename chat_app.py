@@ -4,11 +4,14 @@ from encryption_manager import EncryptionManager
 from key_manager import KeyManager
 
 class ChatApp:
-    def __init__(self):
-        key_manager = KeyManager()  # Add this line
-        self.encryption_manager = EncryptionManager(key_manager)  # Change this line
-        self.network_manager = NetworkManager(self)
+    def __init__(self, host, port):
+        self.network_manager = NetworkManager(host, port)
+        self.key_manager = KeyManager()
+        self.encryption_manager = EncryptionManager(self.key_manager)
         self.gui_manager = GuiManager(self)
+
+        # Connect to the server when the application starts
+        self.network_manager.connect()
 
     def run(self):
         self.gui_manager.run()
